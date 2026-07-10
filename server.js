@@ -278,7 +278,7 @@ function agregarPorHora(ip, grupo, consumoDia, potencia) {
 // ===== BUSCAR DADOS SHELLY =====
 
 
-function buscarDadosShelly(ip) {
+//function buscarDadosShelly(ip) {
 
 
   return new Promise((resolve)=>{
@@ -464,9 +464,9 @@ function buscarDadosShelly(ip) {
 
 
 }
-// ===== BUSCAR TODOS OS SHELLYS =====
+// ===== BUSCAR TODOS OS SHELLYS ===//==
 
-async function buscarTodosDados() {
+//async function buscarTodosDados() {
 
   try {
 
