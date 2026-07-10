@@ -576,15 +576,9 @@ async function buscarTodosDados() {
 
 // ===== INICIAR LEITURAS =====
 
-setInterval(
-  buscarTodosDados,
-  10000
-);
-
-
-buscarTodosDados();
-
-
+app.post('/api/shelly', async (req,res)=>{
+...
+});
 
 // ===== API GRUPOS =====
 
