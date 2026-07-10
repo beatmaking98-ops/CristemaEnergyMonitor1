@@ -1,0 +1,20 @@
+{
+  "name": "cristema-energy-monitor",
+  "version": "1.0.0",
+  "description": "Sistema de monitorização de energia com Shelly Pro EM",
+  "author": "Cristema",
+  "private": true,
+  "license": "MIT",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^1.18.1",
+    "cors": "^2.8.6",
+    "dayjs": "^1.11.13",
+    "express": "^4.22.2",
+    "sqlite3": "^5.1.7"
+  }
+}

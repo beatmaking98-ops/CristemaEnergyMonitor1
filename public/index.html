@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cristema - Monitorização de Energia</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <i class="fas fa-bolt"></i>
+        <span>Cristema</span>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="#dashboard" class="menu-item active" data-page="dashboard">
+          <i class="fas fa-home"></i>
+          <span>Dashboard</span>
+          <span class="menu-badge">●</span>
+        </a>
+        <a href="#devices" class="menu-item" data-page="devices">
+          <i class="fas fa-plug"></i>
+          <span>Dispositivos</span>
+          <span class="menu-badge" id="devices-count">0</span>
+        </a>
+        <a href="#settings" class="menu-item" data-page="settings">
+          <i class="fas fa-cog"></i>
+          <span>Definições</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <i class="fas fa-user-circle"></i>
+          <span>Admin</span>
+        </div>
+        <div class="system-status">
+          <span class="status-dot"></span>
+          <span>Sistema Online</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+      <!-- HEADER -->
+      <header class="header">
+        <div class="header-content">
+          <div class="header-left">
+            <h1 class="page-title" id="page-title">Dashboard</h1>
+            <p class="page-subtitle" id="page-subtitle">Monitoramento em tempo real</p>
+          </div>
+          <div class="header-right">
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <span id="hora">--:--:--</span>
+            </div>
+            <div class="connection-status online">
+              <span class="status-indicator"></span>
+              <span>Conectado</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        <!-- ========== DASHBOARD ========== -->
+        <section id="dashboard" class="page-section active">
+          
+          <!-- Quick Stats -->
+          <div class="quick-stats">
+            <!-- Máquina 269 -->
+            <div class="quick-stat-item">
+              <div class="stat-icon power" style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <div class="stat-info">
+                <p class="stat-label">Máquina 269 (20.0.0.46 + 20.0.0.47)</p>
+                <p class="stat-value"><span id="grupo1-energia">0.000</span> <span>kWh</span></p>
+                <p class="stat-amperes"><span id="grupo1-amperes">0.000</span> <span>A</span></p>
+              </div>
+            </div>
+
+            <!-- Máquina 66 -->
+            <div class="quick-stat-item">
+              <div class="stat-icon energy" style="background: linear-gradient(135deg, #FF9800 0%, #f57c00 100%);">
+                <i class="fas fa-plug"></i>
+              </div>
+              <div class="stat-info">
+                <p class="stat-label">Máquina 66 (20.0.0.20)</p>
+                <p class="stat-value"><span id="grupo2-energia">0.000</span> <span>kWh</span></p>
+                <p class="stat-amperes"><span id="grupo2-amperes">0.000</span> <span>A</span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gráfico Diário (BARRAS) -->
+          <div class="section">
+            <div class="section-header">
+              <h2 class="section-title">Consumo de Energia por Grupo (Diário)</h2>
+              <div class="period-buttons">
+                <button class="period-btn active" data-dias="7">7 Dias</button>
+                <button class="period-btn" data-dias="15">15 Dias</button>
+                <button class="period-btn" data-dias="30">30 Dias</button>
+                <button class="period-btn" data-dias="90">90 Dias</button>
+              </div>
+            </div>
+            <div class="chart-box">
+              <canvas id="grafico"></canvas>
+            </div>
+          </div>
+
+          <!-- Gráfico Tempo Real (BARRAS) - Apenas 24h -->
+          <div class="section">
+            <div class="section-header">
+              <h2 class="section-title">Consumo em Tempo Real (Últimas 24 Horas)</h2>
+            </div>
+            <div class="chart-box">
+              <canvas id="grafico-hora"></canvas>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========== DEVICES ========== -->
+        <section id="devices" class="page-section">
+          <div class="section">
+            <h2 class="section-title">Detalhes dos Dispositivos</h2>
+            <div class="devices-grid" id="devices-grid">
+              <!-- Carregado dinamicamente pela API -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== SETTINGS ========== -->
+        <section id="settings" class="page-section">
+          <div class="section">
+            <h2 class="section-title">Definições do Sistema</h2>
+            <div class="settings-content">
+              <div class="settings-card">
+                <h3>Sistema</h3>
+                <div class="settings-item">
+                  <label>Versão</label>
+                  <span>v1.0.0</span>
+                </div>
+                <div class="settings-item">
+                  <label>Status</label>
+                  <span class="online">● Online</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <p>&copy; 2024 Cristema. Sistema de Monitorização Automática de Energia.</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+    let chartInstance = null;
+    let chartHoraInstance = null;
+    let primeiraCarregamento = true;
+
+    // ===== NAVEGAÇÃO =====
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const page = item.getAttribute('data-page');
+        
+        document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(page).classList.add('active');
+        
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        item.classList.add('active');
+
+        const titles = {
+          dashboard: { title: 'Dashboard', subtitle: 'Monitoramento em tempo real' },
+          devices: { title: 'Dispositivos', subtitle: 'Detalhes de cada Shelly' },
+          settings: { title: 'Definições', subtitle: 'Configurações do sistema' }
+        };
+        document.getElementById('page-title').textContent = titles[page].title;
+        document.getElementById('page-subtitle').textContent = titles[page].subtitle;
+      });
+    });
+
+    // ===== ATUALIZAR HORA =====
+    function atualizarHora() {
+      const agora = new Date();
+      document.getElementById('hora').textContent = agora.toLocaleTimeString('pt-PT');
+    }
+    setInterval(atualizarHora, 1000);
+    atualizarHora();
+
+    // ===== ATUALIZAR VALOR COM TRANSIÇÃO SUAVE =====
+    function updateValueSmooth(elementId, newValue) {
+      const element = document.getElementById(elementId);
+      if (!element) return;
+      
+      const oldValue = element.textContent;
+      if (oldValue === newValue) return;
+      
+      element.style.transition = 'all 0.6s ease';
+      element.style.opacity = '0.6';
+      
+      setTimeout(() => {
+        element.textContent = newValue;
+        element.style.opacity = '1';
+      }, 300);
+    }
+
+    // ===== BUSCAR AMPERES =====
+    async function buscarAmperes(ip) {
+      try {
+        const response = await fetch(`http://${ip}/rpc/EM.GetStatus?id=0`);
+        if (!response.ok) return 0;
+        const data = await response.json();
+        return parseFloat(data.total_current || 0);
+      } catch (erro) {
+        console.error(`Erro ao buscar amperes de ${ip}:`, erro);
+        return 0;
+      }
+    }
+
+    // ===== CARREGAR DADOS =====
+    async function carregarDados() {
+      try {
+        const respGrupos = await fetch(`${API_BASE}/grupos`);
+        if (!respGrupos.ok) throw new Error('Erro ao buscar grupos');
+        const grupos = await respGrupos.json();
+
+        for (const grupo of grupos) {
+          try {
+            const respStatus = await fetch(`${API_BASE}/status/${grupo.id}`);
+            if (!respStatus.ok) throw new Error(`Erro ao buscar status de ${grupo.nome}`);
+            const status = await respStatus.json();
+
+            if (grupo.id === 'grupo1') {
+              updateValueSmooth('grupo1-energia', status.energiaTotal);
+              // Buscar amperes de ambos os IPs e somar
+              const amp46 = await buscarAmperes('20.0.0.46');
+              const amp47 = await buscarAmperes('20.0.0.47');
+              const totalAmp = (amp46 + amp47).toFixed(3);
+              updateValueSmooth('grupo1-amperes', totalAmp);
+            } else if (grupo.id === 'grupo2') {
+              updateValueSmooth('grupo2-energia', status.energiaTotal);
+              // Buscar amperes do IP
+              const amp20 = await buscarAmperes('20.0.0.20');
+              updateValueSmooth('grupo2-amperes', amp20.toFixed(3));
+            }
+
+            const devicesGrid = document.getElementById('devices-grid');
+            if (status.shellys) {
+              status.shellys.forEach(shelly => {
+                let item = document.getElementById(`device-${shelly.ip}`);
+                
+                if (!item) {
+                  item = document.createElement('div');
+                  item.className = 'device-card';
+                  item.id = `device-${shelly.ip}`;
+                  devicesGrid.appendChild(item);
+                }
+
+                item.innerHTML = `
+                  <div class="device-card-header ${shelly.online ? 'online' : 'offline'}">
+                    <div class="device-status-badge">
+                      <span class="status-dot"></span>
+                      ${shelly.online ? '✅ Online' : '❌ Offline'}
+                    </div>
+                  </div>
+                  <div class="device-card-body">
+                    <div class="device-icon">
+                      <i class="fas fa-plug"></i>
+                    </div>
+                    <h3 class="device-name">${grupo.nome}</h3>
+                    <p class="device-ip">${shelly.ip}</p>
+                    <div class="device-values">
+                      <div class="value-item">
+                        <span class="value-label">Potência</span>
+                        <span class="value-data">${shelly.potencia} kW</span>
+                      </div>
+                      <div class="value-item">
+                        <span class="value-label">Energia</span>
+                        <span class="value-data">${shelly.energia} kWh</span>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              });
+            }
+
+          } catch (erro) {
+            console.error(`Erro ao carregar grupo ${grupo.id}:`, erro);
+          }
+        }
+
+        if (primeiraCarregamento) {
+          carregarGraficos();
+          carregarGraficosHora();
+          primeiraCarregamento = false;
+        } else {
+          atualizarGrafico();
+          atualizarGraficoHora();
+        }
+
+      } catch (erro) {
+        console.error('Erro ao carregar dados:', erro);
+      }
+    }
+
+    // ===== CARREGAR GRÁFICOS DIÁRIOS (BARRAS) =====
+    async function carregarGraficos() {
+      try {
+        const dias = document.querySelector('.period-btn.active')?.getAttribute('data-dias') || '7';
+        
+        const datasets = [];
+        let labels = [];
+        let grupo1Dados = [];
+        let grupo2Dados = [];
+
+        const respGrupo1 = await fetch(`${API_BASE}/historico/grupo1?dias=${dias}`);
+        if (respGrupo1.ok) {
+          const historico1 = await respGrupo1.json();
+          labels = historico1.map(d => d.dia);
+          grupo1Dados = historico1.map(d => parseFloat(d.energiaConsumida || 0));
+        }
+
+        const respGrupo2 = await fetch(`${API_BASE}/historico/grupo2?dias=${dias}`);
+        if (respGrupo2.ok) {
+          const historico2 = await respGrupo2.json();
+          if (!labels.length) labels = historico2.map(d => d.dia);
+          grupo2Dados = historico2.map(d => parseFloat(d.energiaConsumida || 0));
+        }
+
+        datasets.push({
+          label: 'Máquina 269',
+          data: grupo1Dados,
+          backgroundColor: 'rgba(76, 175, 80, 0.8)',
+          borderColor: '#4CAF50',
+          borderWidth: 2,
+          borderRadius: 6,
+          hoverBackgroundColor: 'rgba(76, 175, 80, 1)'
+        });
+
+        datasets.push({
+          label: 'Máquina 66',
+          data: grupo2Dados,
+          backgroundColor: 'rgba(255, 152, 0, 0.8)',
+          borderColor: '#FF9800',
+          borderWidth: 2,
+          borderRadius: 6,
+          hoverBackgroundColor: 'rgba(255, 152, 0, 1)'
+        });
+
+        const ctx = document.getElementById('grafico');
+        if (!ctx) return;
+
+        if (chartInstance) {
+          chartInstance.destroy();
+        }
+
+        chartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            animation: { duration: 500 },
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: { display: true, position: 'top' },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': ' + parseFloat(context.parsed.y).toFixed(2) + ' kWh';
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: function(value) {
+                    return value.toFixed(2) + ' kWh';
+                  }
+                }
+              }
+            }
+          }
+        });
+
+      } catch (erro) {
+        console.error('Erro ao carregar gráficos:', erro);
+      }
+    }
+
+    // ===== CARREGAR GRÁFICOS HORÁRIOS (BARRAS - 24h) =====
+    async function carregarGraficosHora() {
+      try {
+        const datasets = [];
+        let labels = [];
+        let grupo1Dados = [];
+        let grupo2Dados = [];
+
+        const respGrupo1 = await fetch(`${API_BASE}/historico-hora/grupo1?horas=24`);
+        if (respGrupo1.ok) {
+          const historico1 = await respGrupo1.json();
+          labels = historico1.map(d => {
+            const data = new Date(d.hora);
+            return data.toLocaleString('pt-PT', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+          });
+          grupo1Dados = historico1.map(d => parseFloat(d.consumoKwh || 0));
+        }
+
+        const respGrupo2 = await fetch(`${API_BASE}/historico-hora/grupo2?horas=24`);
+        if (respGrupo2.ok) {
+          const historico2 = await respGrupo2.json();
+          if (!labels.length) labels = historico2.map(d => {
+            const data = new Date(d.hora);
+            return data.toLocaleString('pt-PT', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+          });
+          grupo2Dados = historico2.map(d => parseFloat(d.consumoKwh || 0));
+        }
+
+        datasets.push({
+          label: 'Máquina 269',
+          data: grupo1Dados,
+          backgroundColor: 'rgba(76, 175, 80, 0.8)',
+          borderColor: '#4CAF50',
+          borderWidth: 2,
+          borderRadius: 6,
+          hoverBackgroundColor: 'rgba(76, 175, 80, 1)'
+        });
+
+        datasets.push({
+          label: 'Máquina 66',
+          data: grupo2Dados,
+          backgroundColor: 'rgba(255, 152, 0, 0.8)',
+          borderColor: '#FF9800',
+          borderWidth: 2,
+          borderRadius: 6,
+          hoverBackgroundColor: 'rgba(255, 152, 0, 1)'
+        });
+
+        const ctx = document.getElementById('grafico-hora');
+        if (!ctx) return;
+
+        if (chartHoraInstance) {
+          chartHoraInstance.destroy();
+        }
+
+        chartHoraInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            animation: { duration: 500 },
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: { display: true, position: 'top' },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': ' + parseFloat(context.parsed.y).toFixed(3) + ' kWh';
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: function(value) {
+                    return value.toFixed(3) + ' kWh';
+                  }
+                }
+              }
+            }
+          }
+        });
+
+      } catch (erro) {
+        console.error('Erro ao carregar gráficos horários:', erro);
+      }
+    }
+
+    // ===== ATUALIZAR GRÁFICO DIÁRIO =====
+    async function atualizarGrafico() {
+      try {
+        if (!chartInstance) return;
+
+        const dias = document.querySelector('.period-btn.active')?.getAttribute('data-dias') || '7';
+        
+        const respGrupo1 = await fetch(`${API_BASE}/historico/grupo1?dias=${dias}`);
+        if (respGrupo1.ok) {
+          const historico1 = await respGrupo1.json();
+          const dados1 = historico1.map(d => parseFloat(d.energiaConsumida || 0));
+          if (chartInstance.data.datasets[0]) {
+            chartInstance.data.datasets[0].data = dados1;
+          }
+        }
+
+        const respGrupo2 = await fetch(`${API_BASE}/historico/grupo2?dias=${dias}`);
+        if (respGrupo2.ok) {
+          const historico2 = await respGrupo2.json();
+          const dados2 = historico2.map(d => parseFloat(d.energiaConsumida || 0));
+          if (chartInstance.data.datasets[1]) {
+            chartInstance.data.datasets[1].data = dados2;
+          }
+        }
+
+        chartInstance.update('none');
+
+      } catch (erro) {
+        console.error('Erro ao atualizar gráfico:', erro);
+      }
+    }
+
+    // ===== ATUALIZAR GRÁFICO HORÁRIO A CADA 10 SEGUNDOS (24h) =====
+    async function atualizarGraficoHora() {
+      try {
+        if (!chartHoraInstance) return;
+
+        const respGrupo1 = await fetch(`${API_BASE}/historico-hora/grupo1?horas=24`);
+        if (respGrupo1.ok) {
+          const historico1 = await respGrupo1.json();
+          const labels1 = historico1.map(d => {
+            const data = new Date(d.hora);
+            return data.toLocaleString('pt-PT', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+          });
+          const dados1 = historico1.map(d => parseFloat(d.consumoKwh || 0));
+          
+          if (chartHoraInstance.data.datasets[0]) {
+            chartHoraInstance.data.labels = labels1;
+            chartHoraInstance.data.datasets[0].data = dados1;
+          }
+        }
+
+        const respGrupo2 = await fetch(`${API_BASE}/historico-hora/grupo2?horas=24`);
+        if (respGrupo2.ok) {
+          const historico2 = await respGrupo2.json();
+          const dados2 = historico2.map(d => parseFloat(d.consumoKwh || 0));
+          if (chartHoraInstance.data.datasets[1]) {
+            chartHoraInstance.data.datasets[1].data = dados2;
+          }
+        }
+
+        chartHoraInstance.update('none');
+
+      } catch (erro) {
+        console.error('Erro ao atualizar gráfico horário:', erro);
+      }
+    }
+
+    // ===== EVENT LISTENERS =====
+    document.querySelectorAll('.period-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        carregarGraficos();
+      });
+    });
+
+    // ===== INICIALIZAR =====
+    carregarDados();
+    setInterval(carregarDados, 2000);
+    setInterval(atualizarGraficoHora, 10000); // Atualizar gráfico horário a cada 10 segundos
+  </script>
+</body>
+</html>

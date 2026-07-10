@@ -1,0 +1,19 @@
+{
+  "grupos": {
+    "grupo1": {
+      "nome": "Grupo Principal",
+      "ips": [
+        "20.0.0.46",
+        "20.0.0.47"
+      ],
+      "cor": "#4CAF50"
+    },
+    "grupo2": {
+      "nome": "Grupo Secundário",
+      "ips": [
+        "20.0.0.20"
+      ],
+      "cor": "#FF9800"
+    }
+  }
+}
