@@ -170,7 +170,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
   <script>
-    const API_BASE = 'http://localhost:3000/api';
+    const API_BASE = window.location.origin + '/api';
     let chartInstance = null;
     let chartHoraInstance = null;
     let primeiraCarregamento = true;
